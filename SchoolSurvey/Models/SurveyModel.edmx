@@ -1,0 +1,427 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="SurveyModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Answer">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StatementId" Type="int" />
+          <Property Name="Text" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="IsDefault" Type="bit" Nullable="false" />
+          <Property Name="IsCustom" Type="bit" Nullable="false" />
+          <Property Name="CustomPrompt" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CategoryPrompt" Type="nvarchar" MaxLength="400" />
+        </EntityType>
+        <EntityType Name="Scholar">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="SchoolId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ScholarAnswer">
+          <Key>
+            <PropertyRef Name="ScholarId" />
+            <PropertyRef Name="StatementId" />
+            <PropertyRef Name="AnswerId" />
+          </Key>
+          <Property Name="ScholarId" Type="int" Nullable="false" />
+          <Property Name="StatementId" Type="int" Nullable="false" />
+          <Property Name="AnswerId" Type="int" Nullable="false" />
+          <Property Name="CustomAnswer" Type="varchar" MaxLength="2000" />
+        </EntityType>
+        <EntityType Name="School">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Statement">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Text" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="CategoryId" Type="int" Nullable="false" />
+          <Property Name="IsNullable" Type="bit" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Answer_ToStatement">
+          <End Role="Statement" Type="Self.Statement" Multiplicity="0..1" />
+          <End Role="Answer" Type="Self.Answer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Statement">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Answer">
+              <PropertyRef Name="StatementId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Scholar_ToSchool">
+          <End Role="School" Type="Self.School" Multiplicity="1" />
+          <End Role="Scholar" Type="Self.Scholar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="School">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Scholar">
+              <PropertyRef Name="SchoolId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ScholarAnswer_ToAnswer">
+          <End Role="Answer" Type="Self.Answer" Multiplicity="1" />
+          <End Role="ScholarAnswer" Type="Self.ScholarAnswer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Answer">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ScholarAnswer">
+              <PropertyRef Name="AnswerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ScholarAnswer_ToScholar">
+          <End Role="Scholar" Type="Self.Scholar" Multiplicity="1" />
+          <End Role="ScholarAnswer" Type="Self.ScholarAnswer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Scholar">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ScholarAnswer">
+              <PropertyRef Name="ScholarId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ScholarAnswer_ToStatement">
+          <End Role="Statement" Type="Self.Statement" Multiplicity="1" />
+          <End Role="ScholarAnswer" Type="Self.ScholarAnswer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Statement">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ScholarAnswer">
+              <PropertyRef Name="StatementId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Statement_ToCategory">
+          <End Role="Category" Type="Self.Category" Multiplicity="1" />
+          <End Role="Statement" Type="Self.Statement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Statement">
+              <PropertyRef Name="CategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SurveyModelStoreContainer">
+          <EntitySet Name="Answer" EntityType="Self.Answer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Scholar" EntityType="Self.Scholar" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ScholarAnswer" EntityType="Self.ScholarAnswer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="School" EntityType="Self.School" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Statement" EntityType="Self.Statement" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Answer_ToStatement" Association="Self.FK_Answer_ToStatement">
+            <End Role="Statement" EntitySet="Statement" />
+            <End Role="Answer" EntitySet="Answer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Scholar_ToSchool" Association="Self.FK_Scholar_ToSchool">
+            <End Role="School" EntitySet="School" />
+            <End Role="Scholar" EntitySet="Scholar" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ScholarAnswer_ToAnswer" Association="Self.FK_ScholarAnswer_ToAnswer">
+            <End Role="Answer" EntitySet="Answer" />
+            <End Role="ScholarAnswer" EntitySet="ScholarAnswer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ScholarAnswer_ToScholar" Association="Self.FK_ScholarAnswer_ToScholar">
+            <End Role="Scholar" EntitySet="Scholar" />
+            <End Role="ScholarAnswer" EntitySet="ScholarAnswer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ScholarAnswer_ToStatement" Association="Self.FK_ScholarAnswer_ToStatement">
+            <End Role="Statement" EntitySet="Statement" />
+            <End Role="ScholarAnswer" EntitySet="ScholarAnswer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Statement_ToCategory" Association="Self.FK_Statement_ToCategory">
+            <End Role="Category" EntitySet="Category" />
+            <End Role="Statement" EntitySet="Statement" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SurveyModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Answer">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StatementId" Type="Int32" />
+          <Property Name="Text" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IsDefault" Type="Boolean" Nullable="false" />
+          <Property Name="IsCustom" Type="Boolean" Nullable="false" />
+          <Property Name="CustomPrompt" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Statement" Relationship="Self.FK_Answer_ToStatement" FromRole="Answer" ToRole="Statement" />
+          <NavigationProperty Name="ScholarAnswer" Relationship="Self.FK_ScholarAnswer_ToAnswer" FromRole="Answer" ToRole="ScholarAnswer" />
+        </EntityType>
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CategoryPrompt" Type="String" MaxLength="400" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Statement" Relationship="Self.FK_Statement_ToCategory" FromRole="Category" ToRole="Statement" />
+        </EntityType>
+        <EntityType Name="Scholar">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="LastName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SchoolId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="School" Relationship="Self.FK_Scholar_ToSchool" FromRole="Scholar" ToRole="School" />
+          <NavigationProperty Name="ScholarAnswer" Relationship="Self.FK_ScholarAnswer_ToScholar" FromRole="Scholar" ToRole="ScholarAnswer" />
+        </EntityType>
+        <EntityType Name="School">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Scholar" Relationship="Self.FK_Scholar_ToSchool" FromRole="School" ToRole="Scholar" />
+        </EntityType>
+        <EntityType Name="Statement">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Text" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CategoryId" Type="Int32" Nullable="false" />
+          <Property Name="IsNullable" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Answer" Relationship="Self.FK_Answer_ToStatement" FromRole="Statement" ToRole="Answer" />
+          <NavigationProperty Name="Category" Relationship="Self.FK_Statement_ToCategory" FromRole="Statement" ToRole="Category" />
+          <NavigationProperty Name="ScholarAnswer" Relationship="Self.FK_ScholarAnswer_ToStatement" FromRole="Statement" ToRole="ScholarAnswer" />
+        </EntityType>
+        <EntityType Name="ScholarAnswer">
+          <Key>
+            <PropertyRef Name="ScholarId" />
+            <PropertyRef Name="StatementId" />
+            <PropertyRef Name="AnswerId" />
+          </Key>
+          <Property Name="ScholarId" Type="Int32" Nullable="false" />
+          <Property Name="StatementId" Type="Int32" Nullable="false" />
+          <Property Name="AnswerId" Type="Int32" Nullable="false" />
+          <Property Name="CustomAnswer" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Answer" Relationship="Self.FK_ScholarAnswer_ToAnswer" FromRole="ScholarAnswer" ToRole="Answer" />
+          <NavigationProperty Name="Scholar" Relationship="Self.FK_ScholarAnswer_ToScholar" FromRole="ScholarAnswer" ToRole="Scholar" />
+          <NavigationProperty Name="Statement" Relationship="Self.FK_ScholarAnswer_ToStatement" FromRole="ScholarAnswer" ToRole="Statement" />
+        </EntityType>
+        <Association Name="FK_Answer_ToStatement">
+          <End Role="Statement" Type="Self.Statement" Multiplicity="0..1" />
+          <End Role="Answer" Type="Self.Answer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Statement">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Answer">
+              <PropertyRef Name="StatementId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ScholarAnswer_ToAnswer">
+          <End Role="Answer" Type="Self.Answer" Multiplicity="1" />
+          <End Role="ScholarAnswer" Type="Self.ScholarAnswer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Answer">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ScholarAnswer">
+              <PropertyRef Name="AnswerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Statement_ToCategory">
+          <End Role="Category" Type="Self.Category" Multiplicity="1" />
+          <End Role="Statement" Type="Self.Statement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Statement">
+              <PropertyRef Name="CategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Scholar_ToSchool">
+          <End Role="School" Type="Self.School" Multiplicity="1" />
+          <End Role="Scholar" Type="Self.Scholar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="School">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Scholar">
+              <PropertyRef Name="SchoolId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ScholarAnswer_ToScholar">
+          <End Role="Scholar" Type="Self.Scholar" Multiplicity="1" />
+          <End Role="ScholarAnswer" Type="Self.ScholarAnswer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Scholar">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ScholarAnswer">
+              <PropertyRef Name="ScholarId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ScholarAnswer_ToStatement">
+          <End Role="Statement" Type="Self.Statement" Multiplicity="1" />
+          <End Role="ScholarAnswer" Type="Self.ScholarAnswer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Statement">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ScholarAnswer">
+              <PropertyRef Name="StatementId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SurveyModelEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Answer" EntityType="Self.Answer" />
+          <EntitySet Name="Category" EntityType="Self.Category" />
+          <EntitySet Name="Scholar" EntityType="Self.Scholar" />
+          <EntitySet Name="School" EntityType="Self.School" />
+          <EntitySet Name="Statement" EntityType="Self.Statement" />
+          <EntitySet Name="ScholarAnswer" EntityType="Self.ScholarAnswer" />
+          <AssociationSet Name="FK_Answer_ToStatement" Association="Self.FK_Answer_ToStatement">
+            <End Role="Statement" EntitySet="Statement" />
+            <End Role="Answer" EntitySet="Answer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ScholarAnswer_ToAnswer" Association="Self.FK_ScholarAnswer_ToAnswer">
+            <End Role="Answer" EntitySet="Answer" />
+            <End Role="ScholarAnswer" EntitySet="ScholarAnswer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Statement_ToCategory" Association="Self.FK_Statement_ToCategory">
+            <End Role="Category" EntitySet="Category" />
+            <End Role="Statement" EntitySet="Statement" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Scholar_ToSchool" Association="Self.FK_Scholar_ToSchool">
+            <End Role="School" EntitySet="School" />
+            <End Role="Scholar" EntitySet="Scholar" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ScholarAnswer_ToScholar" Association="Self.FK_ScholarAnswer_ToScholar">
+            <End Role="Scholar" EntitySet="Scholar" />
+            <End Role="ScholarAnswer" EntitySet="ScholarAnswer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ScholarAnswer_ToStatement" Association="Self.FK_ScholarAnswer_ToStatement">
+            <End Role="Statement" EntitySet="Statement" />
+            <End Role="ScholarAnswer" EntitySet="ScholarAnswer" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SurveyModelStoreContainer" CdmEntityContainer="SurveyModelEntities">
+          <EntitySetMapping Name="Answer">
+            <EntityTypeMapping TypeName="SurveyModel.Answer">
+              <MappingFragment StoreEntitySet="Answer">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="StatementId" ColumnName="StatementId" />
+                <ScalarProperty Name="Text" ColumnName="Text" />
+                <ScalarProperty Name="IsDefault" ColumnName="IsDefault" />
+                <ScalarProperty Name="IsCustom" ColumnName="IsCustom" />
+                <ScalarProperty Name="CustomPrompt" ColumnName="CustomPrompt" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Category">
+            <EntityTypeMapping TypeName="SurveyModel.Category">
+              <MappingFragment StoreEntitySet="Category">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CategoryPrompt" ColumnName="CategoryPrompt" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Scholar">
+            <EntityTypeMapping TypeName="SurveyModel.Scholar">
+              <MappingFragment StoreEntitySet="Scholar">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="SchoolId" ColumnName="SchoolId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="School">
+            <EntityTypeMapping TypeName="SurveyModel.School">
+              <MappingFragment StoreEntitySet="School">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Statement">
+            <EntityTypeMapping TypeName="SurveyModel.Statement">
+              <MappingFragment StoreEntitySet="Statement">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Text" ColumnName="Text" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="IsNullable" ColumnName="IsNullable" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ScholarAnswer">
+            <EntityTypeMapping TypeName="SurveyModel.ScholarAnswer">
+              <MappingFragment StoreEntitySet="ScholarAnswer">
+                <ScalarProperty Name="ScholarId" ColumnName="ScholarId" />
+                <ScalarProperty Name="StatementId" ColumnName="StatementId" />
+                <ScalarProperty Name="AnswerId" ColumnName="AnswerId" />
+                <ScalarProperty Name="CustomAnswer" ColumnName="CustomAnswer" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

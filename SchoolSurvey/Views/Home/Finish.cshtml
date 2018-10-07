@@ -1,0 +1,26 @@
+﻿@model IEnumerable<SchoolSurvey.Models.Scholar>
+
+<div class="jumbotron">
+    <h2>ĮTRAUKIOJO UGDYMO KULTŪRA IR PRAKTIKA MŪSŲ MOKYKLOJE</h2>
+    <p>
+        Mielas moksleivi ar moksleive,
+
+        Tavo mokykla pradeda dalyvauti projekte „Renkuosi mokyti – mokyklos kaitai!” Projekto tikslas - padėti kiekvienam mokiniui patirti mokymosi sėkmę ir pažangą.
+        Maloniai prašome tavęs dalyvauti apklausoje, kuria siekiama atskleisti tavo mokyklos gerąsias patirtis ir tobulintinas sritis.
+        Tavo nuomonė labai svarbi.
+        Apklausa anoniminė, duomenys bus analizuojami ir pateikiami apibendrintai. Maloniai prašome atsakyti į visus anketos klausimus.
+        Tyrimą vykdo jungtinė projekto tyrėjų komanda. Kilus klausimams rašyti el. paštu: @Constants.EMAIL .
+    </p>
+
+    @{
+        var scholarList = new List<SelectListItem>();
+        foreach (var scholar in Model)
+        {
+            scholarList.Add(new SelectListItem
+            {
+                Text = scholar.FirstName + " " + scholar.LastName,
+                Value = scholar.Id.ToString()
+            });
+        }
+    }
+</div>

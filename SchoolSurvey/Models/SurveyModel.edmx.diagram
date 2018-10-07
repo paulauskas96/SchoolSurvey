@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="a30a8d20b2ba4ce392f0d7fe3506e49f" Name="Diagram1">
+        <EntityTypeShape EntityType="SurveyModel.Answer" Width="1.5" PointX="5.25" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="SurveyModel.Category" Width="1.5" PointX="0.75" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SurveyModel.Scholar" Width="1.5" PointX="5.25" PointY="5.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SurveyModel.School" Width="1.5" PointX="3" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SurveyModel.Statement" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="SurveyModel.ScholarAnswer" Width="1.5" PointX="7.5" PointY="1" IsExpanded="true" />
+        <AssociationConnector Association="SurveyModel.FK_Answer_ToStatement" ManuallyRouted="false" />
+        <AssociationConnector Association="SurveyModel.FK_ScholarAnswer_ToAnswer" ManuallyRouted="false" />
+        <AssociationConnector Association="SurveyModel.FK_Statement_ToCategory" ManuallyRouted="false" />
+        <AssociationConnector Association="SurveyModel.FK_Scholar_ToSchool" ManuallyRouted="false" />
+        <AssociationConnector Association="SurveyModel.FK_ScholarAnswer_ToScholar" ManuallyRouted="false" />
+        <AssociationConnector Association="SurveyModel.FK_ScholarAnswer_ToStatement" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
