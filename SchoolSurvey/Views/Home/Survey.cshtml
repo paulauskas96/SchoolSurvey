@@ -16,7 +16,7 @@
         <div class="jumbotron">
             <p>Esate neprisijungęs.</p>
 
-            @Html.ActionLink("Į pradžią", "Index", "Home", new { @class = "btn" })
+            @Html.ActionLink("Į pradžią", "Index", "Home", new { @class = "btn btn-primary", style = "background-color: #8064A2;" })
         </div>
 
         return;
@@ -24,62 +24,72 @@
 
     ViewBag.ScholarId = scholar.Id;
 
-    <div class="jumbotron">
-        <p>Pildote apklausą kaip @scholar.FirstName @scholar.LastName (@scholar.School.Title)</p>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="navbar-brand" style="float:none; text-align: right;">
+            Pildote apklausą kaip @scholar.FirstName @scholar.LastName (@scholar.School.Title)
+        </div>
     </div>
 
-    <div class="jumbotron" id="category1">
+    <div id="category1">
     @{
     var introCtg = Model.FirstOrDefault(ctg => ctg.Id == 1);
-
-    <button class="btn buttonNavigate" onclick="navigateForward(1, 3)">@Constants.FORWARD_BUTTON_TEXT</button>
+        
+    <p style="padding-top:20px">
+        <button class="btn btn-primary buttonNavigate" style="background-color: #8064A2;" onclick="navigateForward(1, 3)">@Constants.FORWARD_BUTTON_TEXT &raquo;</button>
+    </p>
     <h2>@introCtg.CategoryPrompt</h2>
 
     foreach (var statement in introCtg.Statement)
     {
-        <p id="statement@{@statement.Id}" class="statement" category="@{@introCtg.Id}">@statement.Text</p>
-
-        foreach (var answer in statement.Answer)
+        <div class="jumbotron" style="font-size:22px; padding:15px;">
+        <p id="statement@{@statement.Id}" class="statement" category="@{@introCtg.Id}">
+        @statement.Text
+        </p>
+        <div style="font-size:15px;">
+        @foreach (var answer in statement.Answer)
         {
             <div>
-                @{
-                    var radioBtnHtmlAttributes = new
-                    {
-                        @id = "RadioButtonFor" + answer.Id,
-                        @class = "radioButtonFor" + (answer.IsCustom ? "Custom" : "Standard")
-                    };
-                }
-
-                @Html.RadioButton("Statement" + statement.Id, answer.Id, false, radioBtnHtmlAttributes)
-                @answer.Text
-
-                @if (answer.IsCustom)
+            @{
+                var radioBtnHtmlAttributes = new
                 {
-                    var boxHtmlAttributes = new
-                    {
-                        placeholder = answer.CustomPrompt,
-                        style = "display: none;"
-                    };
-
-                    @Html.TextBox("CustomAnswerFor" + statement.Id, null, boxHtmlAttributes);
-                }
-            </div>
+                    @id = "RadioButtonFor" + answer.Id,
+                    @class = "radioButtonFor" + (answer.IsCustom ? "Custom" : "Standard"),
+                };
             }
+
+            @Html.RadioButton("Statement" + statement.Id, answer.Id, false, radioBtnHtmlAttributes)
+            @answer.Text
+
+            @if (answer.IsCustom)
+            {
+                var boxHtmlAttributes = new
+                {
+                    placeholder = answer.CustomPrompt,
+                    style = "display: none; max-width: 500px; width: 500px;",
+                };
+
+                @Html.TextBox("CustomAnswerFor" + statement.Id, null, boxHtmlAttributes);
+            }
+            </div>
         }
+        </div>
+        </div>
     }
-    </div>
+}
+</div>
 
     foreach (var category in Model.Skip(2))
     {
         var prevCtg = (category.Id == 3 ? 1 : category.Id - 1);
         var nextCtg = (category.Id == Model.Count() ? 2 : category.Id + 1);
 
-        <div class="jumbotron" id="category@{@category.Id}" style="display: none;">
-            <button class="btn buttonNavigate" onclick="navigate(@{@category.Id}, @{@prevCtg})">@Constants.BACK_BUTTON_TEXT</button>
-            <button class="btn buttonNavigate" onclick="navigateForward(@{@category.Id}, @{@nextCtg})">@Constants.FORWARD_BUTTON_TEXT</button>
+        <div id="category@{@category.Id}" style="display: none; padding:20px">
+            <button class="btn buttonNavigate btn-primary" style="background-color: #8064A2;" onclick="navigate(@{@category.Id}, @{@prevCtg})">@Constants.BACK_BUTTON_TEXT &laquo;</button>
+            <button class="btn buttonNavigate btn-primary" style="background-color: #8064A2;" onclick="navigateForward(@{@category.Id}, @{@nextCtg})">@Constants.FORWARD_BUTTON_TEXT &raquo;</button>
 
             <h2>@category.CategoryPrompt</h2>
-            <table>
+            <table class="table table-striped" style="color:#8064A2;">
+                <thead class="thead-dark"/>
                 <tr>
                     <th />
                     @foreach (var answer in ViewBag.DefaultAnswers)
@@ -98,33 +108,37 @@
                                     var htmlAttributes = new
                                     {
                                         @id = "RadioButtonFor" + answer.Id,
-                                        @class = "radioButton" + (statement.IsNullable ? "Nullable" : "NotNullable")
+                                        @class = "radioButtonForStandard radioButton" + (statement.IsNullable ? "Nullable" : "NotNullable")
                                     };
                                 }
                                 @Html.RadioButton("Statement" + statement.Id, answer.Id, false, htmlAttributes)
                             </td>
-                                    }
+                        }
                     </tr>
-                                    }
+                    }
             </table>
         </div>
-                                    }
+        }
 
-    <div class="jumbotron" id="category2" style="display: none;">
-    @{
-    <button class="btn buttonNavigate" onclick="navigate(2, @{@Model.Count()})">@Constants.BACK_BUTTON_TEXT</button>
+        <div id="category2" style="display: none;">
+        @{
+            <p style="padding-top:20px">
+                <button class="btn buttonNavigate btn-primary" style="background-color: #8064A2;" onclick="navigate(2, @{@Model.Count()})">@Constants.BACK_BUTTON_TEXT &laquo;</button>
+            </p>
+            var suggestionsCtg = Model.FirstOrDefault(ctg => ctg.Id == 2);
 
-    var suggestionsCtg = Model.FirstOrDefault(ctg => ctg.Id == 2);
+            <h2>@suggestionsCtg.CategoryPrompt</h2>
 
-    <h2>@suggestionsCtg.CategoryPrompt</h2>
+            foreach (var statement in suggestionsCtg.Statement)
+            {
+                <p id="statement@{@statement.Id}" class="statement" category="@{@suggestionsCtg.Id}" />
+                @statement.Text <span style="margin-left:10px">@Html.TextBox("CustomAnswerFor" + statement.Id, null, new { answer = @statement.Answer.FirstOrDefault().Id, style = "max-width: 1000px; width: 1000px; border: none; border-bottom: solid 1px;" })</span>
+            }
 
-    foreach (var statement in suggestionsCtg.Statement)
-    {
-        <p id="statement@{@statement.Id}" class="statement" category="@{@suggestionsCtg.Id}">@statement.Text</p>
-        @Html.TextBox("CustomAnswerFor" + statement.Id, null, new { answer = @statement.Answer.FirstOrDefault().Id });
-    }
-
-    <button class="btn buttonFinish" onclick="finish(@{@ViewBag.ScholarId})">@Constants.FINISH_BUTTON_TEXT</button>
-    }
-    </div>
+            <br />
+            <p style="padding-top:20px">
+                <button class="btn buttonFinish btn-primary" style="font-size: 32px; background-color: #8064A2;" onclick="finish(@{@ViewBag.ScholarId})">@Constants.FINISH_BUTTON_TEXT</button>
+            </p>
+        }
+        </div>
 }
