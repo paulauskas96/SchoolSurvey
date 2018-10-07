@@ -29,19 +29,19 @@ namespace SchoolSurvey.Controllers
         [HttpPost]
         public ActionResult Finish(List<ScholarAnswer> scholarAnswers)
         {
-            if (scholarAnswers != null)
-            {
-                var scholarId = scholarAnswers.FirstOrDefault().ScholarId;
-                var oldAnswers = _context.ScholarAnswer.Where(scholarAnswer => scholarAnswer.ScholarId == scholarId);
-                _context.ScholarAnswer.RemoveRange(oldAnswers);
+            var scholarId = scholarAnswers.FirstOrDefault().ScholarId;
+            var oldAnswers = _context.ScholarAnswer.Where(scholarAnswer => scholarAnswer.ScholarId == scholarId);
+            _context.ScholarAnswer.RemoveRange(oldAnswers);
 
-                _context.ScholarAnswer.AddRange(scholarAnswers.Where(sch => sch.AnswerId != 0));
-                _context.SaveChanges();
-                return Json("Success");
-            }
+            _context.ScholarAnswer.AddRange(scholarAnswers.Where(sch => sch.AnswerId != 0));
+            _context.SaveChanges();
 
-            return Finish(_context.ScholarAnswer.ToList());
+            return View();
+        }
 
+        public ActionResult Finish()
+        {
+            return View();
         }
     }
 }

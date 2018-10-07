@@ -199,8 +199,9 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="InsertionScripts\InsertStatements.sql" />
-    <Content Include="InsertionScripts\InsertSampleData.sql" />
+    <Content Include="DbScripts\ClearScholarAnswers.sql" />
+    <Content Include="DbScripts\InsertStatements.sql" />
+    <Content Include="DbScripts\InsertSampleData.sql" />
     <Content Include="Models\SurveyModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>SurveyModel.edmx</DependentUpon>
@@ -234,6 +235,7 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\SurveyControlHandlers.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
